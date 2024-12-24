@@ -54,13 +54,13 @@ else:
 	print("Required Files are Found...\nCreating DB")
 		
 
-# # Create Cursor
+# Create Cursor
 cursor = conn.cursor()
 
 # # Create Table for each Security
 for i in security_list:
 	# Checking if the Table alredy exists
-    cursor.execute("SELECT to_regclass('{}')".format(i))
+    cursor.execute("SELECT to_regclass('{}')".format(i.replace('-', '_').replace('&', '')))
     result = cursor.fetchall()
     table_exists = 0
 	
@@ -79,7 +79,7 @@ for i in security_list:
         date DATE NOT NULL,
         UNIQUE(date)
     );
-    """.format(i))
+    """.format(i.replace('-', '_').replace('&', '')))
 
     # Read the CSV File and collect Data
     data = open(security_csv_file_dict[i], "r").readlines()
@@ -89,7 +89,7 @@ for i in security_list:
         # Index [(2, Date) (4, open) (5, high) (6, low) (7, close) (10, volume) (11, value)]
 
         # Create the Insert Command
-        insert_data = """INSERT INTO {} (open, high, low, close, volume, value, date) VALUES """.format(i)
+        insert_data = """INSERT INTO {} (open, high, low, close, volume, value, date) VALUES """.format(i.replace('-', '_').replace('&', ''))
 
         for row in data:
             row_data = row.split('","')
@@ -103,10 +103,10 @@ for i in security_list:
         # Inserting CSV data into the TABLE
         cursor.execute(insert_data)
         
-        print("Created and Inserted Data into {} Successfully".format(i))
+        print("Created and Inserted Data into {} Successfully".format(i.replace('-', '_').replace('&', '')))
     
     else:
-        print("EXISTS: {} already Exists".format(i))
+        print("EXISTS: {} already Exists".format(i.replace('-', '_').replace('&', '')))
 	
     conn.commit()
 
