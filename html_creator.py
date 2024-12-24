@@ -327,6 +327,7 @@ body {
 }
 
 .sub_footer {
+    font-style: italic;
     padding: 10px 20px;
 }
 
